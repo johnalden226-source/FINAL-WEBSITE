@@ -76,8 +76,8 @@
                             <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                         </button>
                         <button onclick="showPage('account')" class="text-white hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition-colors">Account</button>
-                        <button onclick="showPage('admin')" class="text-white hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition-colors">Admin</button>
-                        <button onclick="showPage('super-admin')" class="text-white hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition-colors">Super Admin</button>
+                        <button onclick="handleAdminAccess()" class="text-white hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition-colors">Admin</button>
+                        <button onclick="handleSuperAdminAccess()" class="text-white hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition-colors">Super Admin</button>
                     </div>
                 </div>
                 <div class="md:hidden">
@@ -97,8 +97,8 @@
                     <span id="mobile-cart-count" class="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </button>
                 <button onclick="showPage('account')" class="text-white block px-3 py-2 rounded-md text-base font-medium">Account</button>
-                <button onclick="showPage('admin')" class="text-white block px-3 py-2 rounded-md text-base font-medium">Admin</button>
-                <button onclick="showPage('super-admin')" class="text-white block px-3 py-2 rounded-md text-base font-medium">Super Admin</button>
+                <button onclick="handleAdminAccess()" class="text-white block px-3 py-2 rounded-md text-base font-medium">Admin</button>
+                <button onclick="handleSuperAdminAccess()" class="text-white block px-3 py-2 rounded-md text-base font-medium">Super Admin</button>
             </div>
         </div>
     </nav>
@@ -695,6 +695,24 @@
             });
         }
 
+        // Handle Admin Access
+        function handleAdminAccess() {
+            if (!isAdmin) {
+                document.getElementById('admin-login-modal').classList.remove('hidden');
+            } else {
+                showPage('admin');
+            }
+        }
+
+        // Handle Super Admin Access
+        function handleSuperAdminAccess() {
+            if (!isSuperAdmin) {
+                document.getElementById('super-admin-login-modal').classList.remove('hidden');
+            } else {
+                showPage('super-admin');
+            }
+        }
+
         // Select item for cart
         function selectItem(name, price) {
             const existingItem = cart.find(item => item.name === name);
@@ -913,6 +931,7 @@
                 isAdmin = true;
                 closeModal('admin-login-modal');
                 alert('Admin login successful!');
+                showPage('admin');
             } else {
                 alert('Invalid admin credentials');
             }
@@ -928,6 +947,7 @@
                 isSuperAdmin = true;
                 closeModal('super-admin-login-modal');
                 alert('Super Admin login successful!');
+                showPage('super-admin');
             } else {
                 alert('Invalid super admin credentials');
             }
@@ -973,25 +993,6 @@
                 }
             });
         }
-
-        // Override navigation buttons for admin/super admin
-        document.querySelector('[onclick="showPage(\'admin\')"]').addEventListener('click', function(e) {
-            e.preventDefault();
-            if (!isAdmin) {
-                document.getElementById('admin-login-modal').classList.remove('hidden');
-            } else {
-                showPage('admin');
-            }
-        });
-
-        document.querySelector('[onclick="showPage(\'super-admin\')"]').addEventListener('click', function(e) {
-            e.preventDefault();
-            if (!isSuperAdmin) {
-                document.getElementById('super-admin-login-modal').classList.remove('hidden');
-            } else {
-                showPage('super-admin');
-            }
-        });
     </script>
 </body>
 </html>
